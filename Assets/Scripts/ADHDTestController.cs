@@ -17,7 +17,7 @@ public class ADHDTestController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Instance = this;
-		UserDifficulty = Difficulty.HARD;		/////////////////////////////////////////////////
+		UserDifficulty = Difficulty.HARD;
 		AttentionWhore.SetRandomPosition (Border.bounds.extents.x, Border.bounds.extents.y);
 	}
 	
