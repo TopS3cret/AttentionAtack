@@ -6,7 +6,7 @@ public class LevelsController : MonoBehaviour {
 	public LevelController[] MediumLevels;
 	public LevelController[] HardLevels;
 	//
-	public int i = 0;
+	private int i = 0;
 	//
 
 	int CurrentLevelIndex;
