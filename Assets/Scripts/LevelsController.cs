@@ -5,6 +5,9 @@ public class LevelsController : MonoBehaviour {
 	public LevelController[] EasyLevels;
 	public LevelController[] MediumLevels;
 	public LevelController[] HardLevels;
+	//
+	public int i = 0;
+	//
 
 	int CurrentLevelIndex;
 	LevelController CurrentLevel;
@@ -35,12 +38,19 @@ public class LevelsController : MonoBehaviour {
 	}
 
 	void PlayNextLevel(){
+		/*
 		int i;
 		do {
 			i = Random.Range(0, LevelPool.Length);
 		} while (i == CurrentLevelIndex && LevelPool.Length > 1);
+		*/
 
-		CurrentLevelIndex = i;
+
+		CurrentLevelIndex = i++;
+
+		if (i >= LevelPool.Length) {
+			i = 0;
+		}
 
 		CurrentLevel = GameObject.Instantiate (LevelPool [CurrentLevelIndex], transform, false) as LevelController;
 		CurrentLevel.Play ();
