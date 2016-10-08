@@ -5,9 +5,6 @@ public class LevelsController : MonoBehaviour {
 	public LevelController[] EasyLevels;
 	public LevelController[] MediumLevels;
 	public LevelController[] HardLevels;
-	//
-	private int i = 0;
-	//
 
 	int CurrentLevelIndex;
 	LevelController CurrentLevel;
@@ -15,6 +12,11 @@ public class LevelsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		InitLevelsPool ();
+		PlayNextLevel ();
+	}
+
+	void InitLevelsPool(){
 		CurrentLevelIndex = -1;
 		switch (ADHDTestController.Instance.UserDifficulty) {
 		case ADHDTestController.Difficulty.EASY:
@@ -27,7 +29,6 @@ public class LevelsController : MonoBehaviour {
 			LevelPool = HardLevels;
 			break;
 		}
-		PlayNextLevel ();
 	}
 	
 	// Update is called once per frame
@@ -46,10 +47,12 @@ public class LevelsController : MonoBehaviour {
 		*/
 
 
-		CurrentLevelIndex = i++;
+		CurrentLevelIndex++;
 
-		if (i >= LevelPool.Length) {
-			i = 0;
+		if (CurrentLevelIndex >= LevelPool.Length) {
+			ADHDTestController.Instance.IncreaseDifficulty ();
+			InitLevelsPool ();
+			CurrentLevelIndex = 0;
 		}
 
 		CurrentLevel = GameObject.Instantiate (LevelPool [CurrentLevelIndex], transform, false) as LevelController;
