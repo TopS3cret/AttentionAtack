@@ -6,7 +6,7 @@ using System.Text;
 using TETCSharpClient;
 using TETCSharpClient.Data;
 
-class UnityGazeUtils : GazeUtils
+public class UnityGazeUtils : GazeUtils
 {
 	/// <summary>
 	/// Maps a GazeData gaze point (RawCoordinates or SmoothedCoordinates) to Unity screen space. 

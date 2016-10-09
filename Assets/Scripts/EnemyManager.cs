@@ -1,35 +1,69 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour
 {
-    public float playerHealth;
-    public float currentHealth;
-    public GameObject enemy;       
-    public float spawnTime;    
-    public Transform[] spawnPoints; 
+    public float SpawnTime;
+    public PlanetController GoodPlanet;
+    public PlanetController BadPlanet;
+    public BoxCollider2D SpawnBounds;
+    public float Tolerance;
 
+    private List<PlanetController> Planets; 
 
+    void Awake()
+    {
+        Planets = new List<PlanetController>(10);
+    }
     void Start()
     {
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
-        InvokeRepeating("Spawn", spawnTime, spawnTime);
+        InvokeRepeating("Spawn", SpawnTime, SpawnTime);
+    }
+
+    void Update(){
+        foreach(PlanetController planet in Planets)
+        {
+            if (!planet.Spawned)
+            {
+                GameObject.Destroy(planet.gameObject);
+                Planets.Remove(planet);
+            }
+        }
     }
 
 
     void Spawn()
     {
-        // If the player has no health left...
-        if (currentHealth <= 0f)
+        Vector3 planetPos = GetRandomPlanetPosition();
+        PlanetController prefab = Random.Range(0, 2) == 0 ? GoodPlanet : BadPlanet;
+        PlanetController planet = GameObject.Instantiate(prefab, transform, false) as PlanetController;
+        planet.transform.localPosition = planetPos;
+        Planets.Add(planet);
+
+    }
+
+    Vector3 GetRandomPlanetPosition()
+    {
+        Vector2 pos;
+        bool valid;
+        do
         {
-            // ... exit the function.
-            return;
-        }
+            float maxX = SpawnBounds.bounds.extents.x;
+            float maxY = SpawnBounds.bounds.extents.y;
+            pos = new Vector2(Random.Range(-maxX, maxX), Random.Range(-maxY, maxY));
 
-        // Find a random index between zero and one less than the number of spawn points.
-        int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            valid = true;
+            foreach (PlanetController planet in Planets)
+            {
+                if (Vector2.Distance(planet.transform.position, pos) < Tolerance)
+                {
+                    valid = false;
+                    break;
+                }
+            }
+        } while (!valid);
 
-        // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-        Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+        return pos;
     }
 }
