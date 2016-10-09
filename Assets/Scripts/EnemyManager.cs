@@ -35,6 +35,9 @@ public class EnemyManager : MonoBehaviour
 
     void Spawn()
     {
+        if (Planets.Count >= Planets.Capacity)
+            return;
+
         Vector3 planetPos = GetRandomPlanetPosition();
         PlanetController prefab = Random.Range(0, 2) == 0 ? GoodPlanet : BadPlanet;
         PlanetController planet = GameObject.Instantiate(prefab, transform, false) as PlanetController;
