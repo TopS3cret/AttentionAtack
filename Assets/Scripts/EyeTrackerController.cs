@@ -7,6 +7,8 @@ using TETCSharpClient.Data;
 public class EyeTrackerController : MonoBehaviour, IGazeListener {
 	float gazeX = 0f;
 	float gazeY = 0f;
+	public int lookAways = 0;
+	public float timeOff = 0f;
 
 	public Transform GazeTarget;
 	public Transform GazePlanet;
@@ -30,10 +32,14 @@ public class EyeTrackerController : MonoBehaviour, IGazeListener {
     void Update(){
 		float diff = GazeTarget.position.z - GazeCamera.transform.position.z;
 		Vector3 target = GazeCamera.ScreenToWorldPoint(new Vector3(gazeX, gazeY , diff));
-		if(Vector2.Distance (target, GazePlanet.position) < Tolerance){
+		if (Vector2.Distance (target, GazePlanet.position) < Tolerance) {
 			target.x = GazePlanet.position.x;
 			target.y = GazePlanet.position.y;
+		} else if (Time.deltaTime > 0.1) {
+			lookAways++;
+			timeOff += Time.deltaTime;
 		}
+
 		GazeTarget.position = Vector3.Lerp(GazeTarget.position, target, 0.1f);
 
 		if (CooldownTimer > 0f) {

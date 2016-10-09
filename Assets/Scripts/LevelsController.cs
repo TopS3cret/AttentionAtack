@@ -12,6 +12,10 @@ public class LevelsController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+	}
+
+	public void BeginLevel(){
 		InitLevelsPool ();
 		PlayNextLevel ();
 	}
