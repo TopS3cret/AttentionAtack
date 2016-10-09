@@ -39,6 +39,7 @@ public class ADHDTestController : MonoBehaviour {
 		AttentionWhore.SetRandomPosition (Border.bounds.extents.x, Border.bounds.extents.y);
 
 		LevelsController.BeginLevel ();
+        EyeTrackerController.StartLevel();
 	}
 	
 	// Update is called once per frame

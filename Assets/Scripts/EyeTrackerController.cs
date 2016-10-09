@@ -9,6 +9,8 @@ public class EyeTrackerController : MonoBehaviour, IGazeListener {
 	float gazeY = 0f;
 	public int lookAways = 0;
 	public float timeOff = 0f;
+    public float curTimeOff = 0f;
+    private bool lookedAway = false;
 
 	public Transform GazeTarget;
 	public Transform GazePlanet;
@@ -28,6 +30,13 @@ public class EyeTrackerController : MonoBehaviour, IGazeListener {
 		Blinked = false;
     }
 
+    public void StartLevel() {	
+        lookAways = 0;
+        timeOff = 0f;
+        curTimeOff = 0f;
+        lookedAway = false;
+    }
+
     // Update is called once per frame
     void Update(){
 		float diff = GazeTarget.position.z - GazeCamera.transform.position.z;
@@ -35,8 +44,21 @@ public class EyeTrackerController : MonoBehaviour, IGazeListener {
 		if (Vector2.Distance (target, GazePlanet.position) < Tolerance) {
 			target.x = GazePlanet.position.x;
 			target.y = GazePlanet.position.y;
-		} else if (Time.deltaTime > 0.1) {
-			lookAways++;
+            lookedAway = false;
+		} else {
+            if (!lookedAway)
+            {
+                lookedAway = true;
+                curTimeOff = 0f;
+            }
+            else
+            {
+                curTimeOff += Time.deltaTime;
+                if (curTimeOff > 0.2f && curTimeOff < 10f) {
+                    lookAways++;
+                    curTimeOff = 15f;
+                }
+            }
 			timeOff += Time.deltaTime;
 		}
 

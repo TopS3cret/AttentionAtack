@@ -37,12 +37,12 @@ public class menuScript : MonoBehaviour {
 
 	public void StartTest()
 	{
-		Application.LoadLevel (1);
+        SceneManager.LoadScene("ADHDTest");
 	}
 
 	public void StartGame()
 	{
-		Application.LoadLevel (2);
+        SceneManager.LoadScene("LaserGame");
 	}
 
 	public void ExitGame()
